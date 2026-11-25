@@ -7,7 +7,7 @@
   body,
   #root {
     height: 100%;
-    background-color: #09090b;
+    background-color: #07070a;
     color: #f4f4f5;
     font-family: 'Cairo', system-ui, -apple-system, sans-serif;
     overscroll-behavior: none;
@@ -15,39 +15,84 @@
   }
 }
 
-/* Luxury subtle obsidian backdrop with quiet radial depth */
+/* Deep midnight obsidian backdrop with jewel-tone depth */
 .bg-obsidian-stage {
-  background-color: #09090b;
+  position: relative;
+  background-color: #07070a;
   background-image:
-    radial-gradient(ellipse 80% 45% at 50% -10%, rgba(245, 158, 11, 0.08), transparent 65%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(217, 70, 239, 0.06), transparent 60%),
-    radial-gradient(ellipse 50% 35% at 0% 80%, rgba(14, 165, 233, 0.05), transparent 60%);
+    radial-gradient(ellipse 90% 50% at 50% -12%, rgba(251, 191, 36, 0.11), transparent 62%),
+    radial-gradient(ellipse 65% 45% at 100% 100%, rgba(217, 70, 239, 0.09), transparent 58%),
+    radial-gradient(ellipse 55% 40% at 0% 85%, rgba(14, 165, 233, 0.08), transparent 58%);
 }
 
-/* Luxury geometric pattern for concealed influence card backs */
+/* Subtle luxury hairline dot-grid texture for depth */
+.bg-luxury-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Luxury geometric guilloche pattern for concealed influence card backs */
 .card-back-pattern {
-  background-color: #111115;
+  background-color: #0f1016;
   background-image:
-    radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.06), transparent 60%),
+    radial-gradient(circle at 50% 30%, rgba(251, 191, 36, 0.12), transparent 65%),
     repeating-linear-gradient(
       45deg,
-      rgba(255, 255, 255, 0.025) 0px,
-      rgba(255, 255, 255, 0.025) 1px,
+      rgba(251, 191, 36, 0.045) 0px,
+      rgba(251, 191, 36, 0.045) 1px,
       transparent 1px,
-      transparent 9px
+      transparent 8px
     ),
     repeating-linear-gradient(
       -45deg,
-      rgba(255, 255, 255, 0.025) 0px,
-      rgba(255, 255, 255, 0.025) 1px,
+      rgba(255, 255, 255, 0.035) 0px,
+      rgba(255, 255, 255, 0.035) 1px,
       transparent 1px,
-      transparent 9px
+      transparent 8px
     );
+}
+
+/* Metallic light sweep shimmer for luxury CTAs and active cards */
+@keyframes foil-sweep {
+  0% {
+    transform: translateX(140%) skewX(-20deg);
+  }
+  100% {
+    transform: translateX(-140%) skewX(-20deg);
+  }
+}
+
+.foil-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 55%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  animation: foil-sweep 3.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes slow-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-slow-spin {
+  animation: slow-spin 14s linear infinite;
 }
 
 /* 3D perspective utilities for card flips */
 .perspective-800 {
-  perspective: 800px;
+  perspective: 900px;
 }
 
 .preserve-3d {
@@ -70,12 +115,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .safe-pb {

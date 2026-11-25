@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
-  Coins,
   Crown,
   LogOut,
   RotateCcw,
@@ -13,7 +12,17 @@ import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { RoleCard } from './RoleCard';
+import { CoinBadge } from './CoinBadge';
 import { cn } from '../../lib/utils';
+
+const CELEBRATION_SPARKS = [
+  { left: '12%', delay: 0, duration: 4.5, color: '#FBBF24', size: 6 },
+  { left: '26%', delay: 0.7, duration: 5.2, color: '#E879F9', size: 5 },
+  { left: '42%', delay: 0.3, duration: 4.1, color: '#FDE68A', size: 7 },
+  { left: '58%', delay: 1.1, duration: 4.8, color: '#38BDF8', size: 5 },
+  { left: '74%', delay: 0.5, duration: 5.0, color: '#FBBF24', size: 6 },
+  { left: '88%', delay: 0.9, duration: 4.4, color: '#FB7185', size: 5 },
+];
 
 export function GameOverScreen({
   room,
@@ -34,8 +43,10 @@ export function GameOverScreen({
   });
 
   return (
-    <div className="min-h-[100dvh] w-full bg-obsidian-stage px-4 py-6 safe-pt safe-pb">
-      <div className="mx-auto flex w-full max-w-lg flex-col gap-4">
+    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-obsidian-stage px-4 py-6 safe-pt safe-pb">
+      <div className="pointer-events-none absolute inset-0 bg-luxury-grid opacity-35" />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-lg flex-col gap-4">
         {/* Top Row */}
         <div className="flex items-center justify-between">
           <Button variant="secondary" size="sm" onClick={onOpenLog}>
@@ -47,7 +58,7 @@ export function GameOverScreen({
             size="sm"
             onClick={onLeaveRoom}
             loading={busyAction === 'leave_room'}
-            className="text-zinc-400 hover:text-red-300"
+            className="text-zinc-400 hover:text-rose-300"
           >
             <LogOut className="h-4 w-4" strokeWidth={1.75} />
             <span>مغادرة</span>
@@ -56,41 +67,62 @@ export function GameOverScreen({
 
         {/* Celebratory Winner Showcase */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 12 }}
+          initial={{ opacity: 0, scale: 0.94, y: 14 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ type: 'spring', stiffness: 320, damping: 24 }}
         >
-          <Card className="relative overflow-hidden border-amber-400/35 bg-gradient-to-b from-amber-500/15 via-zinc-900/85 to-zinc-950/90 p-6 text-center">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/70 to-transparent" />
+          <Card className="relative overflow-hidden border-amber-400/40 bg-gradient-to-b from-amber-500/20 via-[#15121B]/90 to-[#0D0D14]/95 p-6 text-center">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/80 to-transparent" />
+
+            {/* Subtle Floating Luxury Embers */}
+            {CELEBRATION_SPARKS.map((spark, i) => (
+              <motion.span
+                key={i}
+                aria-hidden="true"
+                initial={{ opacity: 0, y: 120 }}
+                animate={{ opacity: [0, 0.85, 0], y: -24 }}
+                transition={{
+                  duration: spark.duration,
+                  delay: spark.delay,
+                  repeat: Infinity,
+                  ease: 'easeOut',
+                }}
+                style={{
+                  left: spark.left,
+                  width: spark.size,
+                  height: spark.size,
+                  backgroundColor: spark.color,
+                  boxShadow: `0 0 12px ${spark.color}`,
+                }}
+                className="pointer-events-none absolute bottom-0 rounded-full"
+              />
+            ))}
 
             <motion.div
-              initial={{ scale: 0.6, rotate: -10 }}
+              initial={{ scale: 0.55, rotate: -14 }}
               animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 18, delay: 0.1 }}
-              className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-300/40 bg-amber-400/20 text-amber-300 shadow-glow"
+              transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.12 }}
+              className="relative z-10 mx-auto mb-3.5 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-300/50 bg-gradient-to-b from-amber-300/25 to-amber-500/15 text-amber-200 shadow-glow"
             >
               <Trophy className="h-8 w-8" strokeWidth={1.75} />
             </motion.div>
 
-            <Badge variant="gold" className="mb-2">
+            <Badge variant="gold" className="relative z-10 mb-2">
               {iWon ? 'انتصار مستحق!' : 'انتهت الجولة'}
             </Badge>
 
-            <h1 className="text-2xl sm:text-3xl font-black text-white">
+            <h1 className="relative z-10 text-2xl sm:text-3xl font-black text-white">
               {winner ? winner.name : 'لا يوجد فائز'}
             </h1>
-            <p className="mt-1 text-sm text-zinc-300">
+            <p className="relative z-10 mt-1 text-sm text-zinc-300">
               {iWon
                 ? 'أحكمت سيطرتك على الديوان وانتصرت في الجولة!'
                 : 'بقي آخر صاحب نفوذ على طاولة كوب'}
             </p>
 
             {winner && (
-              <div className="mt-4 flex items-center justify-center gap-2">
-                <Badge variant="gold" className="tabular-nums px-3 py-1">
-                  <Coins className="h-3.5 w-3.5" strokeWidth={1.75} />
-                  {winner.coins} عملات
-                </Badge>
+              <div className="relative z-10 mt-4 flex items-center justify-center gap-2">
+                <CoinBadge coins={winner.coins} label="عملات" size="md" />
                 <Badge variant="default" className="tabular-nums px-3 py-1">
                   النفوذ المتبقي: {winner.influenceCount}
                 </Badge>
@@ -104,17 +136,20 @@ export function GameOverScreen({
           <h2 className="mb-3 text-sm font-bold text-zinc-200">كشف جميع البطاقات</h2>
 
           <div className="space-y-3">
-            {sortedPlayers.map((player) => {
+            {sortedPlayers.map((player, idx) => {
               const isWinner = player.id === room.winnerId;
               const isMe = player.id === self?.playerId;
 
               return (
-                <div
+                <motion.div
                   key={player.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + idx * 0.07, type: 'spring', stiffness: 360, damping: 28 }}
                   className={cn(
                     'rounded-2xl border p-3',
                     isWinner
-                      ? 'border-amber-400/35 bg-amber-400/[0.06]'
+                      ? 'border-amber-400/40 bg-gradient-to-l from-amber-400/[0.09] to-transparent'
                       : 'border-white/[0.08] bg-white/[0.025]'
                   )}
                 >
@@ -134,10 +169,7 @@ export function GameOverScreen({
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <Badge variant="gold" className="text-[11px] tabular-nums">
-                        <Coins className="h-3 w-3" strokeWidth={1.75} />
-                        {player.coins}
-                      </Badge>
+                      <CoinBadge coins={player.coins} />
                       {!player.isAlive && (
                         <Badge variant="muted" className="text-[10px]">
                           مطرود
@@ -156,7 +188,7 @@ export function GameOverScreen({
                       />
                     ))}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -169,10 +201,11 @@ export function GameOverScreen({
               <Button
                 variant="gold"
                 size="lg"
+                shimmer
                 loading={busyAction === 'play_again'}
                 disabled={Boolean(busyAction)}
                 onClick={onPlayAgain}
-                className="w-full"
+                className="w-full h-[52px]"
               >
                 <RotateCcw className="h-4 w-4" strokeWidth={1.75} />
                 <span>جولة جديدة</span>
@@ -190,8 +223,8 @@ export function GameOverScreen({
               </Button>
             </>
           ) : (
-            <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-zinc-900/70 py-3.5 px-4 text-sm font-semibold text-zinc-300">
-              <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+            <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#101017]/80 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
+              <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)] animate-pulse" />
               <span>بانتظار المضيف لبدء جولة جديدة...</span>
             </div>
           )}

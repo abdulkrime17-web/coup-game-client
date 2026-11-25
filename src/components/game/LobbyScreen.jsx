@@ -1,7 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen,
+  Check,
   Clock,
   Copy,
   Crown,
@@ -35,14 +36,22 @@ export function LobbyScreen({
   onStartGame,
   onLeaveRoom,
 }) {
+  const [copiedType, setCopiedType] = useState(null);
   const playerCount = room.players.length;
   const canStart = isHost && playerCount >= 2 && playerCount <= 6;
   const isTwoPlayers = playerCount === 2;
+  const digits = String(room.code || '').split('');
+
+  const markCopied = (type) => {
+    setCopiedType(type);
+    setTimeout(() => setCopiedType((prev) => (prev === type ? null : prev)), 1800);
+  };
 
   const handleCopyCode = async () => {
     sound.playClick();
     const ok = await copyToClipboard(room.code);
     if (ok) {
+      markCopied('code');
       toast.success(`تم نسخ رمز الغرفة: ${room.code}`);
     } else {
       toast.error('تعذّر نسخ الرمز');
@@ -54,6 +63,7 @@ export function LobbyScreen({
     const inviteUrl = `${window.location.origin}/?room=${room.code}`;
     const ok = await copyToClipboard(inviteUrl);
     if (ok) {
+      markCopied('link');
       toast.success('تم نسخ رابط الدعوة المباشر');
     } else {
       toast.error('تعذّر نسخ رابط الدعوة');
@@ -61,15 +71,17 @@ export function LobbyScreen({
   };
 
   return (
-    <div className="min-h-[100dvh] w-full bg-obsidian-stage flex flex-col px-4 py-4 safe-pt safe-pb">
+    <div className="relative min-h-[100dvh] w-full overflow-hidden bg-obsidian-stage flex flex-col px-4 py-4 safe-pt safe-pb">
+      <div className="pointer-events-none absolute inset-0 bg-luxury-grid opacity-35" />
+
       {/* Top Bar */}
-      <header className="mx-auto flex w-full max-w-lg items-center justify-between gap-2 mb-4">
+      <header className="relative z-10 mx-auto flex w-full max-w-lg items-center justify-between gap-2 mb-4">
         <Button
           variant="ghost"
           size="sm"
           onClick={onLeaveRoom}
           loading={busyAction === 'leave_room'}
-          className="text-zinc-400 hover:text-red-300"
+          className="text-zinc-400 hover:text-rose-300"
         >
           <LogOut className="h-4 w-4" strokeWidth={1.75} />
           <span>مغادرة</span>
@@ -95,121 +107,166 @@ export function LobbyScreen({
         </div>
       </header>
 
-      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 pb-6">
-        {/* Room Code Hero Card */}
-        <Card className="p-5 text-center relative overflow-hidden">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-400/40 to-transparent" />
-          <p className="text-xs font-semibold text-zinc-400">رمز الغرفة</p>
-          <div
-            dir="ltr"
-            className="mt-1.5 text-4xl sm:text-5xl font-black tracking-[0.28em] text-white tabular-nums pl-[0.28em]"
-          >
-            {room.code}
+      <main className="relative z-10 mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 pb-6">
+        {/* Room Code Hero Card with Individual Digit Tiles */}
+        <Card className="p-5 text-center overflow-hidden">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/55 to-transparent" />
+          <p className="text-xs font-bold text-zinc-400">رمز الغرفة</p>
+
+          <div dir="ltr" className="mt-3 flex items-center justify-center gap-2.5">
+            {digits.map((digit, i) => (
+              <motion.div
+                key={`${digit}-${i}`}
+                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: i * 0.06, type: 'spring', stiffness: 360, damping: 24 }}
+                className="flex h-14 w-[52px] items-center justify-center rounded-2xl border border-amber-300/25 bg-gradient-to-b from-amber-400/[0.1] to-[#0B0B10] text-3xl font-black text-white shadow-[inset_0_1px_0_rgba(254,243,199,0.2)] tabular-nums"
+              >
+                {digit}
+              </motion.div>
+            ))}
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-2.5">
             <Button variant="secondary" size="sm" onClick={handleCopyCode}>
-              <Copy className="h-3.5 w-3.5 text-zinc-300" strokeWidth={1.75} />
-              <span>نسخ الرمز</span>
+              {copiedType === 'code' ? (
+                <Check className="h-3.5 w-3.5 text-emerald-400" strokeWidth={2.25} />
+              ) : (
+                <Copy className="h-3.5 w-3.5 text-zinc-300" strokeWidth={1.75} />
+              )}
+              <span>{copiedType === 'code' ? 'تم النسخ!' : 'نسخ الرمز'}</span>
             </Button>
             <Button variant="secondary" size="sm" onClick={handleCopyInvite}>
-              <Link2 className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
-              <span>نسخ رابط الدعوة</span>
+              {copiedType === 'link' ? (
+                <Check className="h-3.5 w-3.5 text-emerald-400" strokeWidth={2.25} />
+              ) : (
+                <Link2 className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+              )}
+              <span>{copiedType === 'link' ? 'تم النسخ!' : 'نسخ رابط الدعوة'}</span>
             </Button>
           </div>
         </Card>
 
         {/* Players List Card */}
         <Card className="p-4 sm:p-5">
-          <div className="mb-3 flex items-center justify-between">
+          <div className="mb-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Users className="h-4 w-4 text-amber-300" strokeWidth={1.75} />
-              <h2 className="text-sm font-bold text-white">اللاعبون</h2>
+              <h2 className="text-sm font-bold text-white">اللاعبون في الطاولة</h2>
             </div>
             <Badge variant={playerCount >= 2 ? 'gold' : 'muted'} className="tabular-nums">
               {playerCount} / 6
             </Badge>
           </div>
 
+          {/* Seat Capacity Bar */}
+          <div className="mb-3.5 h-1.5 w-full overflow-hidden rounded-full bg-white/[0.06]">
+            <motion.div
+              animate={{ width: `${Math.min(100, (playerCount / 6) * 100)}%` }}
+              transition={{ type: 'spring', stiffness: 280, damping: 28 }}
+              className={cn(
+                'h-full rounded-full',
+                playerCount >= 2
+                  ? 'bg-gradient-to-l from-amber-300 to-amber-500'
+                  : 'bg-zinc-600'
+              )}
+            />
+          </div>
+
           <div className="space-y-2">
-            {room.players.map((player) => {
-              const isMe = player.id === self?.playerId;
-              const isPlayerHost = player.id === room.hostPlayerId;
-              const isReconnecting = player.status === 'reconnecting';
+            <AnimatePresence initial={false} mode="popLayout">
+              {room.players.map((player) => {
+                const isMe = player.id === self?.playerId;
+                const isPlayerHost = player.id === room.hostPlayerId;
+                const isReconnecting = player.status === 'reconnecting';
 
-              return (
-                <motion.div
-                  layout
-                  key={player.id}
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={cn(
-                    'flex items-center justify-between gap-3 rounded-xl border px-3.5 py-2.5 transition-colors',
-                    isMe
-                      ? 'border-amber-400/25 bg-amber-400/[0.06]'
-                      : 'border-white/[0.08] bg-white/[0.025]'
-                  )}
-                >
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-800/90 text-sm font-extrabold text-zinc-100">
-                      {player.name.slice(0, 1)}
-                      <span
+                return (
+                  <motion.div
+                    layout
+                    key={player.id}
+                    initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.94, x: 16 }}
+                    transition={{ type: 'spring', stiffness: 380, damping: 28 }}
+                    className={cn(
+                      'flex items-center justify-between gap-3 rounded-2xl border px-3.5 py-2.5 transition-colors',
+                      isMe
+                        ? 'border-amber-400/30 bg-gradient-to-l from-amber-400/[0.09] to-transparent'
+                        : 'border-white/[0.08] bg-white/[0.025]'
+                    )}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div
                         className={cn(
-                          'absolute -bottom-0.5 -left-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#121216]',
-                          isReconnecting ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'
+                          'relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border text-sm font-extrabold',
+                          isPlayerHost
+                            ? 'border-amber-400/35 bg-amber-400/15 text-amber-200'
+                            : 'border-white/10 bg-zinc-800/90 text-zinc-100'
                         )}
-                      />
-                    </div>
+                      >
+                        {player.name.slice(0, 1)}
+                        <span
+                          className={cn(
+                            'absolute -bottom-0.5 -left-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#121218]',
+                            isReconnecting ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'
+                          )}
+                        />
+                      </div>
 
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-1.5 flex-wrap">
-                        <span className="text-sm font-bold text-white truncate">
-                          {player.name}
-                        </span>
-                        {isMe && (
-                          <Badge variant="default" className="text-[10px] px-1.5 py-0">
-                            أنت
-                          </Badge>
-                        )}
-                        {isPlayerHost && (
-                          <Badge variant="gold" className="text-[10px] px-1.5 py-0">
-                            <Crown className="h-2.5 w-2.5" strokeWidth={2} />
-                            المضيف
-                          </Badge>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-1.5 flex-wrap">
+                          <span className="text-sm font-bold text-white truncate">
+                            {player.name}
+                          </span>
+                          {isMe && (
+                            <Badge variant="default" className="text-[10px] px-1.5 py-0">
+                              أنت
+                            </Badge>
+                          )}
+                          {isPlayerHost && (
+                            <Badge variant="gold" className="text-[10px] px-1.5 py-0">
+                              <Crown className="h-2.5 w-2.5" strokeWidth={2} />
+                              المضيف
+                            </Badge>
+                          )}
+                        </div>
+                        {isReconnecting && (
+                          <span className="text-[11px] text-amber-300">يعيد الاتصال...</span>
                         )}
                       </div>
-                      {isReconnecting && (
-                        <span className="text-[11px] text-amber-300">يعيد الاتصال...</span>
-                      )}
                     </div>
-                  </div>
 
-                  {isHost && !isMe && (
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      aria-label={`طرد ${player.name}`}
-                      loading={busyAction === `kick_${player.id}`}
-                      onClick={() => onKickPlayer(player.id)}
-                      className="h-8 w-8 text-zinc-400 hover:bg-red-500/15 hover:text-red-300"
-                    >
-                      <UserX className="h-4 w-4" strokeWidth={1.75} />
-                    </Button>
-                  )}
-                </motion.div>
-              );
-            })}
+                    {isHost && !isMe && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        aria-label={`طرد ${player.name}`}
+                        loading={busyAction === `kick_${player.id}`}
+                        onClick={() => onKickPlayer(player.id)}
+                        className="h-8 w-8 text-zinc-400 hover:bg-rose-500/15 hover:text-rose-300"
+                      >
+                        <UserX className="h-4 w-4" strokeWidth={1.75} />
+                      </Button>
+                    )}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
 
             {playerCount < 2 && (
-              <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.015] px-4 py-3 text-center text-xs text-zinc-500">
-                بانتظار انضمام لاعب آخر على الأقل (الحد الأدنى لاعبان)
-              </div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="rounded-2xl border border-dashed border-white/15 bg-white/[0.015] px-4 py-3 text-center text-xs text-zinc-400"
+              >
+                شارك رمز الغرفة مع صديقك للبدء (الحد الأدنى لاعبان)
+              </motion.div>
             )}
           </div>
         </Card>
 
         {/* Host Settings Card */}
-        <Card className="p-4 sm:p-5 space-y-3.5">
+        <Card className="p-4 sm:p-5 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Settings2 className="h-4 w-4 text-zinc-400" strokeWidth={1.75} />
@@ -221,7 +278,7 @@ export function LobbyScreen({
           </div>
 
           {/* Server Response Timers Overview */}
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-zinc-950/60 px-3.5 py-2.5">
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.08] bg-[#09090E]/75 px-3.5 py-2.5">
             <div className="flex items-center gap-2.5 min-w-0">
               <Clock className="h-4 w-4 text-zinc-400 shrink-0" strokeWidth={1.75} />
               <div className="min-w-0">
@@ -244,10 +301,10 @@ export function LobbyScreen({
           {/* 2-Player Draft Variant Switch */}
           <div
             className={cn(
-              'flex items-center justify-between gap-3 rounded-xl border px-3.5 py-3 transition-colors',
+              'flex items-center justify-between gap-3 rounded-2xl border px-3.5 py-3 transition-colors',
               isTwoPlayers
-                ? 'border-amber-400/25 bg-amber-400/[0.04]'
-                : 'border-white/[0.08] bg-zinc-950/60'
+                ? 'border-amber-400/30 bg-amber-400/[0.06]'
+                : 'border-white/[0.08] bg-[#09090E]/75'
             )}
           >
             <div className="min-w-0">
@@ -278,11 +335,12 @@ export function LobbyScreen({
         </Card>
 
         {/* Start Action Footer */}
-        <div className="mt-auto pt-2">
+        <div className="mt-auto pt-1">
           {isHost ? (
             <Button
               variant="gold"
               size="lg"
+              shimmer={canStart}
               disabled={!canStart}
               loading={busyAction === 'start_game'}
               onClick={onStartGame}
@@ -292,8 +350,8 @@ export function LobbyScreen({
               <span>ابدأ اللعبة</span>
             </Button>
           ) : (
-            <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-zinc-900/70 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
-              <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+            <div className="flex items-center justify-center gap-2.5 rounded-2xl border border-white/[0.1] bg-[#101016]/80 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
+              <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)] animate-pulse" />
               <span>بانتظار المضيف لبدء اللعبة...</span>
             </div>
           )}

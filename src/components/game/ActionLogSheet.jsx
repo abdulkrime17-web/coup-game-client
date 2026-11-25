@@ -1,7 +1,8 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { ScrollText } from 'lucide-react';
 import { Sheet } from '../ui/Sheet';
-import { formatTimeArabic } from '../../lib/utils';
+import { cn, formatTimeArabic } from '../../lib/utils';
 
 export function ActionLogSheet({ open, onClose, actionLog = [] }) {
   const reversed = [...actionLog].reverse();
@@ -21,26 +22,41 @@ export function ActionLogSheet({ open, onClose, actionLog = [] }) {
       ) : (
         <ol className="space-y-2">
           {reversed.map((entry, idx) => (
-            <li
+            <motion.li
               key={entry.id || `${entry.timestamp}-${idx}`}
-              className="flex items-start justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.03] px-3.5 py-2.5"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: Math.min(idx * 0.025, 0.25), duration: 0.2 }}
+              className={cn(
+                'flex items-start justify-between gap-3 rounded-2xl border px-3.5 py-2.5',
+                idx === 0
+                  ? 'border-amber-400/25 bg-amber-400/[0.06]'
+                  : 'border-white/[0.08] bg-white/[0.03]'
+              )}
             >
               <div className="flex items-start gap-2.5 min-w-0">
                 <span
                   className={
                     idx === 0
-                      ? 'mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]'
+                      ? 'mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)]'
                       : 'mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-600'
                   }
                 />
-                <p className="text-xs sm:text-sm leading-relaxed text-zinc-200">{entry.textAr}</p>
+                <p
+                  className={cn(
+                    'text-xs sm:text-sm leading-relaxed',
+                    idx === 0 ? 'font-semibold text-white' : 'text-zinc-300'
+                  )}
+                >
+                  {entry.textAr}
+                </p>
               </div>
               {entry.timestamp && (
                 <span className="shrink-0 text-[10px] text-zinc-500 tabular-nums pt-0.5">
                   {formatTimeArabic(entry.timestamp)}
                 </span>
               )}
-            </li>
+            </motion.li>
           ))}
         </ol>
       )}

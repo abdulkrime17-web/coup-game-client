@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { AlertTriangle, Coins, Layers, Sparkles, Target } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { AlertTriangle, Layers, Sparkles, Target } from 'lucide-react';
 import { Sheet } from '../ui/Sheet';
 import { Button } from '../ui/Button';
-import { Badge } from '../ui/Badge';
 import { RoleCard } from './RoleCard';
+import { CoinBadge } from './CoinBadge';
 import { ACTION_LABELS_AR, formatLossReasonAr } from '../../lib/constants';
 import { cn } from '../../lib/utils';
 
@@ -11,10 +12,10 @@ function ModalCountdownBar({ countdown, tone = 'amber' }) {
   if (!countdown?.active) return null;
   const barColor =
     countdown.isUrgent || tone === 'danger'
-      ? 'bg-red-500'
+      ? 'bg-gradient-to-l from-rose-400 to-red-500 shadow-[0_0_12px_rgba(244,63,94,0.65)]'
       : tone === 'lime'
-        ? 'bg-lime-400'
-        : 'bg-amber-400';
+        ? 'bg-gradient-to-l from-lime-300 to-emerald-400 shadow-[0_0_12px_rgba(163,230,53,0.5)]'
+        : 'bg-gradient-to-l from-amber-300 to-amber-500 shadow-[0_0_12px_rgba(251,191,36,0.5)]';
 
   return (
     <div className="mb-4">
@@ -22,8 +23,8 @@ function ModalCountdownBar({ countdown, tone = 'amber' }) {
         <span className="text-zinc-400">الوقت المتبقي</span>
         <span
           className={cn(
-            'font-bold tabular-nums',
-            countdown.isUrgent ? 'text-red-400' : 'text-zinc-200'
+            'font-extrabold tabular-nums',
+            countdown.isUrgent ? 'text-rose-400 animate-pulse' : 'text-zinc-200'
           )}
         >
           {countdown.secondsLeft} ثانية
@@ -70,23 +71,30 @@ export function TargetPickerSheet({
       tone={actionType === 'coup' ? 'danger' : 'default'}
     >
       <div className="space-y-2.5">
-        {aliveOpponents.map((player) => {
+        {aliveOpponents.map((player, idx) => {
           const noCoins = isSteal && player.coins < 1;
           return (
-            <button
+            <motion.button
               key={player.id}
               type="button"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.045, type: 'spring', stiffness: 420, damping: 28 }}
+              whileHover={noCoins || busy ? undefined : { scale: 1.01 }}
+              whileTap={noCoins || busy ? undefined : { scale: 0.98 }}
               disabled={noCoins || busy}
               onClick={() => onSelectTarget(player.id)}
               className={cn(
                 'w-full flex items-center justify-between gap-3 rounded-2xl border p-3.5 text-right transition-all',
                 noCoins
-                  ? 'border-white/5 bg-white/[0.02] opacity-45 cursor-not-allowed'
-                  : 'border-white/10 bg-white/[0.04] hover:border-amber-400/50 hover:bg-white/[0.08] active:scale-[0.99]'
+                  ? 'border-white/5 bg-white/[0.02] opacity-40 cursor-not-allowed'
+                  : actionType === 'coup'
+                    ? 'border-rose-500/25 bg-rose-500/[0.06] hover:border-rose-400/60 hover:bg-rose-500/[0.12]'
+                    : 'border-white/10 bg-white/[0.04] hover:border-amber-400/55 hover:bg-white/[0.08]'
               )}
             >
               <div className="flex items-center gap-3 min-w-0">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-800/80 text-sm font-bold text-zinc-100">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-zinc-800/90 text-sm font-extrabold text-zinc-100">
                   {player.name.slice(0, 1)}
                 </div>
                 <div className="min-w-0">
@@ -94,25 +102,24 @@ export function TargetPickerSheet({
                   <div className="flex items-center gap-2 mt-0.5 text-xs text-zinc-400">
                     <span className="inline-flex items-center gap-1 tabular-nums">
                       <Layers className="h-3 w-3" strokeWidth={1.75} />
-                      {player.influenceCount === 1 ? 'بطاقة واحدة' : `${player.influenceCount} بطاقات`}
+                      {player.influenceCount === 1
+                        ? 'بطاقة واحدة'
+                        : `${player.influenceCount} بطاقات`}
                     </span>
-                    {noCoins && <span className="text-red-300">• لا يملك عملات</span>}
+                    {noCoins && <span className="text-rose-300">• لا يملك عملات</span>}
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
-                <Badge variant="gold" className="tabular-nums">
-                  <Coins className="h-3 w-3" strokeWidth={1.75} />
-                  {player.coins}
-                </Badge>
+                <CoinBadge coins={player.coins} />
                 {!noCoins && (
-                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/[0.08] text-zinc-200">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-white/[0.08] text-zinc-100">
                     <Target className="h-4 w-4" strokeWidth={1.75} />
                   </div>
                 )}
               </div>
-            </button>
+            </motion.button>
           );
         })}
 
@@ -172,15 +179,22 @@ export function AmbassadorExchangeSheet({
       <ModalCountdownBar countdown={countdown} tone="lime" />
 
       <div className="grid grid-cols-2 gap-3 mb-4">
-        {(options || []).map((card) => (
-          <RoleCard
+        {(options || []).map((card, idx) => (
+          <motion.div
             key={card.id}
-            size="picker"
-            character={card.character}
-            selected={selectedIds.includes(card.id)}
-            disabled={busy}
-            onClick={() => toggleCard(card.id)}
-          />
+            initial={{ opacity: 0, y: 12, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: idx * 0.05, type: 'spring', stiffness: 380, damping: 26 }}
+          >
+            <RoleCard
+              size="picker"
+              character={card.character}
+              selected={selectedIds.includes(card.id)}
+              disabled={busy}
+              onClick={() => toggleCard(card.id)}
+              className="w-full"
+            />
+          </motion.div>
         ))}
       </div>
 
@@ -191,10 +205,11 @@ export function AmbassadorExchangeSheet({
         </span>
         <Button
           variant="gold"
+          shimmer={canConfirm}
           disabled={!canConfirm}
           loading={busy}
           onClick={() => onConfirm(selectedIds)}
-          className="min-w-[140px]"
+          className="min-w-[148px]"
         >
           تأكيد الاحتفاظ
         </Button>
@@ -233,22 +248,29 @@ export function ChooseInfluenceLossSheet({
     >
       <ModalCountdownBar countdown={countdown} tone="danger" />
 
-      <div className="mb-3 flex items-center gap-2 rounded-xl border border-red-500/25 bg-red-500/10 px-3 py-2 text-xs text-red-200">
-        <AlertTriangle className="h-4 w-4 shrink-0 text-red-400" strokeWidth={1.75} />
+      <div className="mb-3.5 flex items-center gap-2 rounded-2xl border border-rose-500/30 bg-rose-500/10 px-3.5 py-2.5 text-xs text-rose-200">
+        <AlertTriangle className="h-4 w-4 shrink-0 text-rose-400" strokeWidth={1.75} />
         <span>ستُكشف البطاقة المختارة أمام الجميع وتخرج من نفوذك نهائياً.</span>
       </div>
 
       <div className="grid grid-cols-2 gap-3 mb-4">
-        {hiddenCards.map((card) => (
-          <RoleCard
+        {hiddenCards.map((card, idx) => (
+          <motion.div
             key={card.id}
-            size="picker"
-            danger
-            character={card.character}
-            selected={selectedId === card.id}
-            disabled={busy}
-            onClick={() => setSelectedId(card.id)}
-          />
+            initial={{ opacity: 0, y: 12, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ delay: idx * 0.06, type: 'spring', stiffness: 380, damping: 26 }}
+          >
+            <RoleCard
+              size="picker"
+              danger
+              character={card.character}
+              selected={selectedId === card.id}
+              disabled={busy}
+              onClick={() => setSelectedId(card.id)}
+              className="w-full"
+            />
+          </motion.div>
         ))}
       </div>
 
@@ -301,30 +323,42 @@ export function DraftSetupSheet({
 
       {hasPicked ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-amber-400/30 bg-amber-400/15 text-amber-300 mb-3">
-            <Sparkles className="h-6 w-6 animate-pulse" strokeWidth={1.75} />
-          </div>
-          <p className="text-sm font-bold text-white">تم اختيار بطاقتك!</p>
+          <motion.div
+            animate={{ scale: [1, 1.08, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-400/35 bg-amber-400/15 text-amber-300 shadow-glow mb-3"
+          >
+            <Sparkles className="h-6 w-6" strokeWidth={1.75} />
+          </motion.div>
+          <p className="text-sm font-extrabold text-white">تم اختيار بطاقتك!</p>
           <p className="text-xs text-zinc-400 mt-1">ستبدأ الجولة تلقائياً فور اختيار خصمك</p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-4">
             {(options || []).map((character, idx) => (
-              <RoleCard
+              <motion.div
                 key={`${character}-${idx}`}
-                size="picker"
-                character={character}
-                selected={selectedChar === `${character}-${idx}`}
-                disabled={busy}
-                onClick={() => setSelectedChar(`${character}-${idx}`)}
-              />
+                initial={{ opacity: 0, y: 12, scale: 0.94 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: idx * 0.045, type: 'spring', stiffness: 380, damping: 26 }}
+              >
+                <RoleCard
+                  size="picker"
+                  character={character}
+                  selected={selectedChar === `${character}-${idx}`}
+                  disabled={busy}
+                  onClick={() => setSelectedChar(`${character}-${idx}`)}
+                  className="w-full"
+                />
+              </motion.div>
             ))}
           </div>
 
           <Button
             variant="gold"
             size="lg"
+            shimmer={Boolean(selectedChar)}
             disabled={!selectedChar}
             loading={busy}
             onClick={() => {

@@ -5,9 +5,9 @@ import { CHARACTER_META } from '../../lib/constants';
 import { cn } from '../../lib/utils';
 
 /**
- * Luxury Coup Influence Card supporting 3 modes:
- * - "opponent": compact slot with 3D Framer Motion flip when revealed
- * - "hand": personal influence card with ability reminder and lost state
+ * Collectible Luxury Coup Influence Card supporting 3 modes:
+ * - "opponent": compact slot with 3D Framer Motion spring flip when revealed
+ * - "hand": personal influence card with inner frame, crest watermark, and lost state
  * - "picker": interactive selectable card for Exchange / Influence Loss / Draft
  */
 export function RoleCard({
@@ -30,13 +30,14 @@ export function RoleCard({
         <motion.div
           initial={false}
           animate={{ rotateY: isFlipped ? 180 : 0 }}
-          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ type: 'spring', stiffness: 260, damping: 24 }}
           className="relative h-full w-full preserve-3d"
         >
           {/* Concealed Card Back */}
-          <div className="backface-hidden absolute inset-0 flex items-center justify-center rounded-xl border border-white/[0.12] card-back-pattern shadow-inner">
-            <div className="flex h-6 w-6 items-center justify-center rounded-full border border-white/10 bg-white/[0.03]">
-              <Crown className="h-3 w-3 text-zinc-500" strokeWidth={1.75} />
+          <div className="backface-hidden absolute inset-0 flex items-center justify-center rounded-xl border border-amber-300/15 card-back-pattern shadow-inner overflow-hidden">
+            <div className="pointer-events-none absolute inset-1 rounded-lg border border-white/[0.05]" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-full border border-amber-300/20 bg-amber-400/[0.06]">
+              <Crown className="h-3 w-3 text-amber-300/55" strokeWidth={1.75} />
             </div>
           </div>
 
@@ -44,20 +45,20 @@ export function RoleCard({
           <div
             style={{ transform: 'rotateY(180deg)' }}
             className={cn(
-              'backface-hidden absolute inset-0 flex items-center justify-center gap-1.5 overflow-hidden rounded-xl border px-1.5 bg-gradient-to-br',
+              'backface-hidden absolute inset-0 flex items-center justify-center gap-1.5 overflow-hidden rounded-xl border px-2 bg-gradient-to-br',
               meta ? meta.gradient : 'from-zinc-800/70 to-zinc-950',
               meta ? meta.border : 'border-white/10'
             )}
           >
             <div className="absolute inset-0 bg-zinc-950/55" />
-            <div className="relative z-10 flex items-center gap-1 min-w-0">
+            <div className="relative z-10 flex items-center gap-1.5 min-w-0">
               {meta && (
                 <Icon
-                  className={cn('h-3.5 w-3.5 shrink-0 opacity-75', meta.textAccent)}
+                  className={cn('h-3.5 w-3.5 shrink-0 opacity-85', meta.textAccent)}
                   strokeWidth={1.75}
                 />
               )}
-              <span className="truncate text-[11px] font-bold text-zinc-300 line-through decoration-red-400/80 decoration-2">
+              <span className="truncate text-[11px] font-bold text-zinc-200 line-through decoration-rose-400/90 decoration-2">
                 {meta?.nameAr || 'مكشوفة'}
               </span>
             </div>
@@ -71,24 +72,46 @@ export function RoleCard({
     return (
       <motion.button
         type="button"
-        whileTap={disabled ? undefined : { scale: 0.97 }}
+        whileHover={disabled ? undefined : { y: -2, scale: 1.01 }}
+        whileTap={disabled ? undefined : { scale: 0.965 }}
+        transition={{ type: 'spring', stiffness: 450, damping: 26 }}
         disabled={disabled}
         onClick={onClick}
+        style={
+          selected && meta
+            ? {
+                boxShadow: danger
+                  ? '0 0 28px -6px rgba(244, 63, 94, 0.65)'
+                  : `0 0 28px -6px ${meta.glowRgba}`,
+              }
+            : undefined
+        }
         className={cn(
-          'relative flex flex-col justify-between rounded-2xl border p-3.5 text-right transition-all duration-150 bg-gradient-to-br overflow-hidden min-h-[116px]',
+          'relative flex flex-col justify-between rounded-2xl border p-3.5 text-right transition-colors duration-150 bg-gradient-to-br overflow-hidden min-h-[122px]',
           meta ? meta.gradient : 'from-zinc-800/50 to-zinc-950',
           selected
             ? danger
-              ? 'border-red-400 ring-2 ring-red-500/50 shadow-[0_0_24px_-6px_rgba(239,68,68,0.6)]'
-              : 'border-amber-300 ring-2 ring-amber-400/50 shadow-[0_0_24px_-6px_rgba(245,158,11,0.5)]'
+              ? 'border-rose-400 ring-2 ring-rose-500/50'
+              : 'border-amber-300 ring-2 ring-amber-400/55'
             : meta
-              ? cn(meta.border, 'hover:border-white/30')
+              ? cn(meta.border, meta.hoverBorder)
               : 'border-white/10',
-          disabled && 'opacity-45 pointer-events-none',
+          disabled && 'opacity-40 pointer-events-none',
           className
         )}
       >
-        <div className="flex items-start justify-between gap-2 w-full">
+        {/* Inner collectible hairline rim */}
+        <div className="pointer-events-none absolute inset-1.5 rounded-xl border border-white/[0.06]" />
+        {/* Oversized crest watermark */}
+        <Icon
+          className={cn(
+            'pointer-events-none absolute -bottom-3 -left-3 h-20 w-20 opacity-[0.07]',
+            meta?.textAccent || 'text-white'
+          )}
+          strokeWidth={1.25}
+        />
+
+        <div className="relative z-10 flex items-start justify-between gap-2 w-full">
           <div
             className={cn(
               'flex h-9 w-9 items-center justify-center rounded-xl border',
@@ -98,14 +121,16 @@ export function RoleCard({
             <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
           </div>
 
-          <div
+          <motion.div
+            animate={selected ? { scale: [0.8, 1.12, 1] } : { scale: 1 }}
+            transition={{ duration: 0.22 }}
             className={cn(
               'flex h-6 w-6 items-center justify-center rounded-full border transition-all',
               selected
                 ? danger
-                  ? 'bg-red-500 border-red-300 text-white'
-                  : 'bg-amber-400 border-amber-200 text-zinc-950'
-                : 'border-white/15 bg-black/30 text-transparent'
+                  ? 'bg-rose-500 border-rose-300 text-white shadow-sm'
+                  : 'bg-amber-400 border-amber-200 text-zinc-950 shadow-sm'
+                : 'border-white/15 bg-black/35 text-transparent'
             )}
           >
             {danger && selected ? (
@@ -113,14 +138,14 @@ export function RoleCard({
             ) : (
               <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
             )}
-          </div>
+          </motion.div>
         </div>
 
-        <div className="mt-3">
-          <div className="text-sm sm:text-base font-extrabold text-white">
+        <div className="relative z-10 mt-3.5">
+          <div className="text-sm sm:text-base font-extrabold text-white tracking-tight">
             {meta?.nameAr || 'بطاقة'}
           </div>
-          <div className="text-[11px] text-zinc-300/85 mt-0.5 leading-snug">
+          <div className="text-[11px] text-zinc-300/90 mt-0.5 leading-snug">
             {meta?.shortAbilityAr}
           </div>
         </div>
@@ -128,28 +153,46 @@ export function RoleCard({
     );
   }
 
-  // Default: size === 'hand' (player's personal luxury card)
+  // Default: size === 'hand' (player's personal luxury playing card)
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25 }}
+      initial={{ opacity: 0, y: 10, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      whileHover={revealed ? undefined : { y: -2 }}
+      transition={{ type: 'spring', stiffness: 360, damping: 28 }}
+      style={
+        !revealed && meta
+          ? {
+              boxShadow: `0 16px 36px -20px ${meta.glowRgba}, inset 0 1px 0 rgba(255,255,255,0.14)`,
+            }
+          : undefined
+      }
       className={cn(
         'relative flex flex-col justify-between overflow-hidden rounded-2xl border p-3 sm:p-3.5 bg-gradient-to-br transition-all',
         meta ? meta.gradient : 'from-zinc-800/50 to-zinc-950',
         revealed
-          ? 'border-white/10 opacity-55 grayscale-[0.55]'
+          ? 'border-white/10 opacity-50 grayscale-[0.6]'
           : meta
-            ? cn(meta.border, 'shadow-glass')
+            ? cn(meta.border, meta.hoverBorder)
             : 'border-white/10',
         className
       )}
     >
-      {/* Subtle top edge highlight */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-white/25 to-transparent" />
+      {/* Top specular highlight */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-white/30 to-transparent" />
+      {/* Inner collectible double frame */}
+      <div className="pointer-events-none absolute inset-1.5 rounded-xl border border-white/[0.06]" />
+      {/* Subtle crest watermark */}
+      <Icon
+        className={cn(
+          'pointer-events-none absolute -bottom-3 -left-3 h-20 w-20 opacity-[0.075]',
+          meta?.textAccent || 'text-white'
+        )}
+        strokeWidth={1.25}
+      />
 
-      <div className="flex items-start justify-between gap-2">
+      <div className="relative z-10 flex items-start justify-between gap-2">
         <div
           className={cn(
             'flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl border',
@@ -160,22 +203,27 @@ export function RoleCard({
         </div>
 
         {revealed ? (
-          <span className="inline-flex items-center gap-1 rounded-full border border-red-500/35 bg-red-500/15 px-2 py-0.5 text-[10px] font-bold text-red-300">
+          <span className="inline-flex items-center gap-1 rounded-full border border-rose-500/40 bg-rose-500/20 px-2 py-0.5 text-[10px] font-bold text-rose-200">
             مكشوفة
           </span>
         ) : (
           <span
-            className="h-2 w-2 rounded-full mt-1"
-            style={{ backgroundColor: meta?.hex || '#A1A1AA' }}
+            className="mt-1.5 h-2 w-2 rounded-full shadow-sm"
+            style={{
+              backgroundColor: meta?.hex || '#A1A1AA',
+              boxShadow: meta ? `0 0 10px ${meta.hex}` : undefined,
+            }}
           />
         )}
       </div>
 
-      <div className="mt-2.5 sm:mt-3">
+      <div className="relative z-10 mt-2.5 sm:mt-3">
         <div
           className={cn(
             'text-sm sm:text-base font-extrabold tracking-tight',
-            revealed ? 'text-zinc-300 line-through decoration-red-400/80 decoration-2' : 'text-white'
+            revealed
+              ? 'text-zinc-300 line-through decoration-rose-400/90 decoration-2'
+              : 'text-white'
           )}
         >
           {meta?.nameAr || 'بطاقة'}
