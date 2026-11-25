@@ -10,6 +10,7 @@ import {
   LogOut,
   Play,
   Settings2,
+  Share2,
   UserX,
   Users,
   Volume2,
@@ -58,15 +59,35 @@ export function LobbyScreen({
     }
   };
 
-  const handleCopyInvite = async () => {
+  const canNativeShare =
+    typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+
+  const handleShareInvite = async () => {
     sound.playClick();
     const inviteUrl = `${window.location.origin}/?room=${room.code}`;
+
+    if (canNativeShare) {
+      try {
+        await navigator.share({
+          title: 'انضم إليّ في لعبة كوب (انقلاب)',
+          text: `انضم لغرفتي في لعبة كوب • رمز الغرفة: ${room.code}`,
+          url: inviteUrl,
+        });
+        markCopied('shared');
+        return;
+      } catch (err) {
+        // User dismissed the native share sheet — do not show an error
+        if (err?.name === 'AbortError') return;
+      }
+    }
+
+    // Fallback to clipboard copy on unsupported browsers
     const ok = await copyToClipboard(inviteUrl);
     if (ok) {
       markCopied('link');
       toast.success('تم نسخ رابط الدعوة المباشر');
     } else {
-      toast.error('تعذّر نسخ رابط الدعوة');
+      toast.error('تعذّر مشاركة أو نسخ رابط الدعوة');
     }
   };
 
@@ -136,13 +157,23 @@ export function LobbyScreen({
               )}
               <span>{copiedType === 'code' ? 'تم النسخ!' : 'نسخ الرمز'}</span>
             </Button>
-            <Button variant="secondary" size="sm" onClick={handleCopyInvite}>
-              {copiedType === 'link' ? (
+            <Button variant="secondary" size="sm" onClick={handleShareInvite}>
+              {copiedType === 'link' || copiedType === 'shared' ? (
                 <Check className="h-3.5 w-3.5 text-emerald-400" strokeWidth={2.25} />
+              ) : canNativeShare ? (
+                <Share2 className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
               ) : (
                 <Link2 className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
               )}
-              <span>{copiedType === 'link' ? 'تم النسخ!' : 'نسخ رابط الدعوة'}</span>
+              <span>
+                {copiedType === 'shared'
+                  ? 'تمت المشاركة!'
+                  : copiedType === 'link'
+                    ? 'تم النسخ!'
+                    : canNativeShare
+                      ? 'مشاركة رابط الدعوة'
+                      : 'نسخ رابط الدعوة'}
+              </span>
             </Button>
           </div>
         </Card>
