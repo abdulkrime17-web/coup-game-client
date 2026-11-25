@@ -34,10 +34,10 @@ export function RoleCard({
           className="relative h-full w-full preserve-3d"
         >
           {/* Concealed Card Back */}
-          <div className="backface-hidden absolute inset-0 flex items-center justify-center rounded-xl border border-amber-300/15 card-back-pattern shadow-inner overflow-hidden">
-            <div className="pointer-events-none absolute inset-1 rounded-lg border border-white/[0.05]" />
-            <div className="flex h-6 w-6 items-center justify-center rounded-full border border-amber-300/20 bg-amber-400/[0.06]">
-              <Crown className="h-3 w-3 text-amber-300/55" strokeWidth={1.75} />
+          <div className="backface-hidden absolute inset-0 flex items-center justify-center rounded-xl border border-indigo-300/20 card-back-pattern shadow-inner overflow-hidden">
+            <div className="pointer-events-none absolute inset-1 rounded-lg border border-white/[0.06]" />
+            <div className="flex h-6 w-6 items-center justify-center rounded-full border border-indigo-300/25 bg-indigo-400/10">
+              <Crown className="h-3 w-3 text-indigo-300/75" strokeWidth={1.75} />
             </div>
           </div>
 
@@ -92,7 +92,7 @@ export function RoleCard({
           selected
             ? danger
               ? 'border-rose-400 ring-2 ring-rose-500/50'
-              : 'border-amber-300 ring-2 ring-amber-400/55'
+              : 'border-indigo-300 ring-2 ring-indigo-400/60'
             : meta
               ? cn(meta.border, meta.hoverBorder)
               : 'border-white/10',
@@ -100,12 +100,10 @@ export function RoleCard({
           className
         )}
       >
-        {/* Inner collectible hairline rim */}
         <div className="pointer-events-none absolute inset-1.5 rounded-xl border border-white/[0.06]" />
-        {/* Oversized crest watermark */}
         <Icon
           className={cn(
-            'pointer-events-none absolute -bottom-3 -left-3 h-20 w-20 opacity-[0.07]',
+            'pointer-events-none absolute -bottom-3 -left-3 h-20 w-20 opacity-[0.075]',
             meta?.textAccent || 'text-white'
           )}
           strokeWidth={1.25}
@@ -129,7 +127,7 @@ export function RoleCard({
               selected
                 ? danger
                   ? 'bg-rose-500 border-rose-300 text-white shadow-sm'
-                  : 'bg-amber-400 border-amber-200 text-zinc-950 shadow-sm'
+                  : 'bg-indigo-400 border-indigo-200 text-zinc-950 shadow-sm'
                 : 'border-white/15 bg-black/35 text-transparent'
             )}
           >
@@ -179,11 +177,8 @@ export function RoleCard({
         className
       )}
     >
-      {/* Top specular highlight */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-white/30 to-transparent" />
-      {/* Inner collectible double frame */}
       <div className="pointer-events-none absolute inset-1.5 rounded-xl border border-white/[0.06]" />
-      {/* Subtle crest watermark */}
       <Icon
         className={cn(
           'pointer-events-none absolute -bottom-3 -left-3 h-20 w-20 opacity-[0.075]',

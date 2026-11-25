@@ -90,7 +90,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div dir="rtl" className="min-h-[100dvh] w-full bg-[#07070A] text-zinc-100 font-sans">
+      <div dir="rtl" className="min-h-[100dvh] w-full bg-[#06070B] text-zinc-100 font-sans">
         <Toaster
           position="top-center"
           dir="rtl"
@@ -99,7 +99,7 @@ export default function App() {
           toastOptions={{
             style: {
               fontFamily: '"Cairo", system-ui, sans-serif',
-              background: 'rgba(16, 16, 23, 0.94)',
+              background: 'rgba(13, 16, 25, 0.95)',
               border: '1px solid rgba(255, 255, 255, 0.13)',
               backdropFilter: 'blur(18px)',
               borderRadius: '16px',
@@ -117,12 +117,12 @@ export default function App() {
               <motion.div
                 animate={{ scale: [1, 1.06, 1] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-                className="flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-400/35 bg-amber-400/15 text-amber-300 shadow-glow"
+                className="flex h-16 w-16 items-center justify-center rounded-2xl border border-indigo-400/40 bg-indigo-500/20 text-indigo-200 shadow-glow"
               >
                 <Crown className="h-8 w-8" strokeWidth={1.75} />
               </motion.div>
               <div className="flex items-center gap-2 text-sm font-bold text-zinc-200">
-                <Loader2 className="h-4 w-4 animate-spin text-amber-400" strokeWidth={2} />
+                <Loader2 className="h-4 w-4 animate-spin text-indigo-400" strokeWidth={2} />
                 <span>جاري استعادة جلستك...</span>
               </div>
             </motion.div>

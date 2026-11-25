@@ -8,14 +8,14 @@ import { CoinBadge } from './CoinBadge';
 import { ACTION_LABELS_AR, formatLossReasonAr } from '../../lib/constants';
 import { cn } from '../../lib/utils';
 
-function ModalCountdownBar({ countdown, tone = 'amber' }) {
+function ModalCountdownBar({ countdown, tone = 'accent' }) {
   if (!countdown?.active) return null;
   const barColor =
     countdown.isUrgent || tone === 'danger'
       ? 'bg-gradient-to-l from-rose-400 to-red-500 shadow-[0_0_12px_rgba(244,63,94,0.65)]'
       : tone === 'lime'
         ? 'bg-gradient-to-l from-lime-300 to-emerald-400 shadow-[0_0_12px_rgba(163,230,53,0.5)]'
-        : 'bg-gradient-to-l from-amber-300 to-amber-500 shadow-[0_0_12px_rgba(251,191,36,0.5)]';
+        : 'bg-gradient-to-l from-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(129,140,248,0.6)]';
 
   return (
     <div className="mb-4">
@@ -90,7 +90,7 @@ export function TargetPickerSheet({
                   ? 'border-white/5 bg-white/[0.02] opacity-40 cursor-not-allowed'
                   : actionType === 'coup'
                     ? 'border-rose-500/25 bg-rose-500/[0.06] hover:border-rose-400/60 hover:bg-rose-500/[0.12]'
-                    : 'border-white/10 bg-white/[0.04] hover:border-amber-400/55 hover:bg-white/[0.08]'
+                    : 'border-white/10 bg-white/[0.04] hover:border-indigo-400/55 hover:bg-white/[0.08]'
               )}
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -319,14 +319,14 @@ export function DraftSetupSheet({
           : 'اختر شخصية واحدة لتبدأ بها، وستُسحب بطاقتك الثانية عشوائياً'
       }
     >
-      <ModalCountdownBar countdown={countdown} tone="amber" />
+      <ModalCountdownBar countdown={countdown} tone="accent" />
 
       {hasPicked ? (
         <div className="flex flex-col items-center justify-center py-8 text-center">
           <motion.div
             animate={{ scale: [1, 1.08, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-400/35 bg-amber-400/15 text-amber-300 shadow-glow mb-3"
+            className="flex h-14 w-14 items-center justify-center rounded-2xl border border-indigo-400/40 bg-indigo-500/20 text-indigo-200 shadow-glow mb-3"
           >
             <Sparkles className="h-6 w-6" strokeWidth={1.75} />
           </motion.div>

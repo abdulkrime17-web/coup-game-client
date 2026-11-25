@@ -76,12 +76,10 @@ export function LobbyScreen({
         markCopied('shared');
         return;
       } catch (err) {
-        // User dismissed the native share sheet — do not show an error
         if (err?.name === 'AbortError') return;
       }
     }
 
-    // Fallback to clipboard copy on unsupported browsers
     const ok = await copyToClipboard(inviteUrl);
     if (ok) {
       markCopied('link');
@@ -110,7 +108,7 @@ export function LobbyScreen({
 
         <div className="flex items-center gap-2">
           <Button variant="secondary" size="sm" onClick={onOpenRules}>
-            <BookOpen className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+            <BookOpen className="h-3.5 w-3.5 text-indigo-300" strokeWidth={1.75} />
             <span>ورقة القواعد</span>
           </Button>
           <Button
@@ -131,7 +129,7 @@ export function LobbyScreen({
       <main className="relative z-10 mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 pb-6">
         {/* Room Code Hero Card with Individual Digit Tiles */}
         <Card className="p-5 text-center overflow-hidden">
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/55 to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-indigo-300/60 to-transparent" />
           <p className="text-xs font-bold text-zinc-400">رمز الغرفة</p>
 
           <div dir="ltr" className="mt-3 flex items-center justify-center gap-2.5">
@@ -141,7 +139,7 @@ export function LobbyScreen({
                 initial={{ opacity: 0, y: 10, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ delay: i * 0.06, type: 'spring', stiffness: 360, damping: 24 }}
-                className="flex h-14 w-[52px] items-center justify-center rounded-2xl border border-amber-300/25 bg-gradient-to-b from-amber-400/[0.1] to-[#0B0B10] text-3xl font-black text-white shadow-[inset_0_1px_0_rgba(254,243,199,0.2)] tabular-nums"
+                className="flex h-14 w-[52px] items-center justify-center rounded-2xl border border-indigo-300/25 bg-gradient-to-b from-indigo-500/15 to-[#090B14] text-3xl font-black text-white shadow-[inset_0_1px_0_rgba(224,231,255,0.2)] tabular-nums"
               >
                 {digit}
               </motion.div>
@@ -161,9 +159,9 @@ export function LobbyScreen({
               {copiedType === 'link' || copiedType === 'shared' ? (
                 <Check className="h-3.5 w-3.5 text-emerald-400" strokeWidth={2.25} />
               ) : canNativeShare ? (
-                <Share2 className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+                <Share2 className="h-3.5 w-3.5 text-indigo-300" strokeWidth={1.75} />
               ) : (
-                <Link2 className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+                <Link2 className="h-3.5 w-3.5 text-indigo-300" strokeWidth={1.75} />
               )}
               <span>
                 {copiedType === 'shared'
@@ -182,7 +180,7 @@ export function LobbyScreen({
         <Card className="p-4 sm:p-5">
           <div className="mb-2.5 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-amber-300" strokeWidth={1.75} />
+              <Users className="h-4 w-4 text-indigo-300" strokeWidth={1.75} />
               <h2 className="text-sm font-bold text-white">اللاعبون في الطاولة</h2>
             </div>
             <Badge variant={playerCount >= 2 ? 'gold' : 'muted'} className="tabular-nums">
@@ -198,7 +196,7 @@ export function LobbyScreen({
               className={cn(
                 'h-full rounded-full',
                 playerCount >= 2
-                  ? 'bg-gradient-to-l from-amber-300 to-amber-500'
+                  ? 'bg-gradient-to-l from-indigo-400 to-violet-500'
                   : 'bg-zinc-600'
               )}
             />
@@ -222,7 +220,7 @@ export function LobbyScreen({
                     className={cn(
                       'flex items-center justify-between gap-3 rounded-2xl border px-3.5 py-2.5 transition-colors',
                       isMe
-                        ? 'border-amber-400/30 bg-gradient-to-l from-amber-400/[0.09] to-transparent'
+                        ? 'border-indigo-400/35 bg-gradient-to-l from-indigo-500/15 to-transparent'
                         : 'border-white/[0.08] bg-white/[0.025]'
                     )}
                   >
@@ -231,15 +229,15 @@ export function LobbyScreen({
                         className={cn(
                           'relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border text-sm font-extrabold',
                           isPlayerHost
-                            ? 'border-amber-400/35 bg-amber-400/15 text-amber-200'
+                            ? 'border-indigo-400/40 bg-indigo-500/20 text-indigo-200'
                             : 'border-white/10 bg-zinc-800/90 text-zinc-100'
                         )}
                       >
                         {player.name.slice(0, 1)}
                         <span
                           className={cn(
-                            'absolute -bottom-0.5 -left-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#121218]',
-                            isReconnecting ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'
+                            'absolute -bottom-0.5 -left-0.5 h-2.5 w-2.5 rounded-full border-2 border-[#0D1019]',
+                            isReconnecting ? 'bg-sky-400 animate-pulse' : 'bg-emerald-400'
                           )}
                         />
                       </div>
@@ -262,7 +260,7 @@ export function LobbyScreen({
                           )}
                         </div>
                         {isReconnecting && (
-                          <span className="text-[11px] text-amber-300">يعيد الاتصال...</span>
+                          <span className="text-[11px] text-sky-300">يعيد الاتصال...</span>
                         )}
                       </div>
                     </div>
@@ -309,7 +307,7 @@ export function LobbyScreen({
           </div>
 
           {/* Server Response Timers Overview */}
-          <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.08] bg-[#09090E]/75 px-3.5 py-2.5">
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/[0.08] bg-[#080A12]/80 px-3.5 py-2.5">
             <div className="flex items-center gap-2.5 min-w-0">
               <Clock className="h-4 w-4 text-zinc-400 shrink-0" strokeWidth={1.75} />
               <div className="min-w-0">
@@ -334,8 +332,8 @@ export function LobbyScreen({
             className={cn(
               'flex items-center justify-between gap-3 rounded-2xl border px-3.5 py-3 transition-colors',
               isTwoPlayers
-                ? 'border-amber-400/30 bg-amber-400/[0.06]'
-                : 'border-white/[0.08] bg-[#09090E]/75'
+                ? 'border-indigo-400/35 bg-indigo-500/10'
+                : 'border-white/[0.08] bg-[#080A12]/80'
             )}
           >
             <div className="min-w-0">
@@ -381,8 +379,8 @@ export function LobbyScreen({
               <span>ابدأ اللعبة</span>
             </Button>
           ) : (
-            <div className="flex items-center justify-center gap-2.5 rounded-2xl border border-white/[0.1] bg-[#101016]/80 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
-              <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)] animate-pulse" />
+            <div className="flex items-center justify-center gap-2.5 rounded-2xl border border-white/[0.1] bg-[#0D1019]/85 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
+              <span className="h-2 w-2 rounded-full bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.9)] animate-pulse" />
               <span>بانتظار المضيف لبدء اللعبة...</span>
             </div>
           )}

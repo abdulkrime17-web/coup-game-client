@@ -23,16 +23,16 @@ export function Sheet({
   }, [open, dismissible, onClose]);
 
   const toneClasses = {
-    default: 'bg-[#101017]/95 border-white/[0.13] shadow-[0_-18px_60px_-20px_rgba(0,0,0,0.9)]',
+    default: 'bg-[#0D1019]/95 border-white/[0.12] shadow-[0_-18px_60px_-20px_rgba(0,0,0,0.92)]',
     danger:
-      'bg-[#180B0F]/95 border-rose-500/40 shadow-[0_0_70px_-15px_rgba(244,63,94,0.45)]',
-    gold: 'bg-[#15120A]/95 border-amber-400/40 shadow-[0_0_70px_-15px_rgba(251,191,36,0.38)]',
+      'bg-[#160A10]/95 border-rose-500/40 shadow-[0_0_70px_-15px_rgba(244,63,94,0.45)]',
+    gold: 'bg-[#0F1124]/95 border-indigo-400/40 shadow-[0_0_70px_-15px_rgba(129,140,248,0.45)]',
   };
 
   const topLineClasses = {
     default: 'via-white/25',
-    danger: 'via-rose-400/70',
-    gold: 'via-amber-300/75',
+    danger: 'via-rose-400/75',
+    gold: 'via-indigo-300/80',
   };
 
   return (

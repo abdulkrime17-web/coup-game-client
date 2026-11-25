@@ -63,19 +63,19 @@ export function HomeScreen({
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-obsidian-stage flex flex-col justify-between px-4 py-5 safe-pt safe-pb">
-      {/* Subtle Luxury Dot Grid & Breathing Ambient Orbs */}
+      {/* Subtle Cool Dot Grid & Breathing Ambient Indigo/Cyan Orbs */}
       <div className="pointer-events-none absolute inset-0 bg-luxury-grid opacity-45" />
       <motion.div
         aria-hidden="true"
         animate={{ opacity: [0.35, 0.6, 0.35], scale: [1, 1.08, 1] }}
         transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-72 rounded-full bg-amber-400/15 blur-[100px]"
+        className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-72 rounded-full bg-indigo-500/20 blur-[100px]"
       />
       <motion.div
         aria-hidden="true"
         animate={{ opacity: [0.25, 0.45, 0.25], scale: [1, 1.1, 1] }}
         transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut', delay: 1.5 }}
-        className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-fuchsia-500/15 blur-[110px]"
+        className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-violet-500/15 blur-[110px]"
       />
 
       {/* Minimal Top Bar */}
@@ -100,7 +100,7 @@ export function HomeScreen({
 
         <div className="flex items-center gap-2">
           <Button variant="secondary" size="sm" onClick={onOpenRules}>
-            <BookOpen className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+            <BookOpen className="h-3.5 w-3.5 text-indigo-300" strokeWidth={1.75} />
             <span>ورقة القواعد</span>
           </Button>
           <Button
@@ -164,16 +164,16 @@ export function HomeScreen({
                 initial={{ scale: 0.75, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, type: 'spring', stiffness: 320, damping: 20 }}
-                className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-amber-300/45 bg-gradient-to-b from-[#1E1910] to-[#0B0A0F] shadow-glow"
+                className="relative z-10 flex h-14 w-14 items-center justify-center rounded-2xl border border-indigo-300/45 bg-gradient-to-b from-[#1A1F38] to-[#0B0D18] shadow-glow"
               >
-                <div className="pointer-events-none absolute -inset-[1px] rounded-2xl bg-gradient-to-tr from-amber-400/30 via-transparent to-fuchsia-400/30 opacity-75" />
-                <Crown className="relative z-10 h-7 w-7 text-amber-300" strokeWidth={1.75} />
+                <div className="pointer-events-none absolute -inset-[1px] rounded-2xl bg-gradient-to-tr from-indigo-400/35 via-transparent to-sky-400/30 opacity-80" />
+                <Crown className="relative z-10 h-7 w-7 text-indigo-200" strokeWidth={1.75} />
               </motion.div>
             </div>
 
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white">
               كوب{' '}
-              <span className="bg-gradient-to-l from-amber-200 via-amber-400 to-fuchsia-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-l from-indigo-300 via-violet-300 to-sky-300 bg-clip-text text-transparent">
                 • انقلاب
               </span>
             </h1>
@@ -188,10 +188,10 @@ export function HomeScreen({
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -6 }}
-                className="mb-4 flex items-start gap-2.5 rounded-2xl border border-amber-500/35 bg-amber-500/10 p-3.5 text-xs text-amber-200 backdrop-blur-md"
+                className="mb-4 flex items-start gap-2.5 rounded-2xl border border-rose-500/35 bg-rose-500/10 p-3.5 text-xs text-rose-200 backdrop-blur-md"
               >
                 <AlertCircle
-                  className="h-4 w-4 shrink-0 text-amber-400 mt-0.5"
+                  className="h-4 w-4 shrink-0 text-rose-400 mt-0.5"
                   strokeWidth={1.75}
                 />
                 <span className="leading-relaxed">
@@ -207,15 +207,15 @@ export function HomeScreen({
                 initial={{ opacity: 0, scale: 0.96 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
-                className="mb-4 flex items-center justify-between gap-2 rounded-2xl border border-amber-400/30 bg-gradient-to-l from-amber-500/15 to-amber-500/5 px-3.5 py-2.5 text-xs text-amber-100 backdrop-blur-md"
+                className="mb-4 flex items-center justify-between gap-2 rounded-2xl border border-indigo-400/35 bg-gradient-to-l from-indigo-500/20 to-indigo-500/5 px-3.5 py-2.5 text-xs text-indigo-100 backdrop-blur-md"
               >
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-amber-300 shrink-0" strokeWidth={1.75} />
+                  <Sparkles className="h-4 w-4 text-indigo-300 shrink-0" strokeWidth={1.75} />
                   <span className="font-semibold">دعوة مباشرة للغرفة</span>
                 </div>
                 <span
                   dir="ltr"
-                  className="font-black tracking-[0.22em] text-amber-300 tabular-nums"
+                  className="font-black tracking-[0.22em] text-indigo-200 tabular-nums"
                 >
                   {inviteRoomCode}
                 </span>
@@ -225,10 +225,10 @@ export function HomeScreen({
 
           <Card className="p-5 sm:p-6 overflow-hidden">
             {/* Top Specular Hairline */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/45 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-indigo-300/50 to-transparent" />
 
             {/* Animated Segmented Tabs */}
-            <div className="relative mb-5 grid grid-cols-2 rounded-2xl border border-white/[0.1] bg-[#09090E]/90 p-1">
+            <div className="relative mb-5 grid grid-cols-2 rounded-2xl border border-white/[0.1] bg-[#070911]/90 p-1">
               {TABS.map((tab) => {
                 const isActive = activeTab === tab.id;
                 const Icon = tab.icon;
@@ -273,7 +273,7 @@ export function HomeScreen({
                   placeholder="مثال: خالد"
                   value={playerName}
                   onChange={(e) => setPlayerName(e.target.value)}
-                  className="h-12 w-full rounded-xl border border-white/[0.12] bg-[#09090E]/85 px-4 text-sm font-semibold text-white placeholder:text-zinc-600 focus:border-amber-400/65 focus:outline-none focus:ring-2 focus:ring-amber-400/20 transition-all"
+                  className="h-12 w-full rounded-xl border border-white/[0.12] bg-[#070911]/90 px-4 text-sm font-semibold text-white placeholder:text-zinc-600 focus:border-indigo-400/70 focus:outline-none focus:ring-2 focus:ring-indigo-400/25 transition-all"
                 />
               </div>
 
@@ -319,11 +319,11 @@ export function HomeScreen({
                             <div
                               key={slotIdx}
                               className={cn(
-                                'relative flex h-14 items-center justify-center rounded-2xl border bg-[#09090E]/90 text-2xl font-black tabular-nums transition-all duration-150',
+                                'relative flex h-14 items-center justify-center rounded-2xl border bg-[#070911]/95 text-2xl font-black tabular-nums transition-all duration-150',
                                 isCurrentSlot
-                                  ? 'border-amber-400/80 ring-2 ring-amber-400/25 shadow-[0_0_20px_-6px_rgba(251,191,36,0.45)]'
+                                  ? 'border-indigo-400/85 ring-2 ring-indigo-400/25 shadow-[0_0_20px_-6px_rgba(129,140,248,0.55)]'
                                   : digit
-                                    ? 'border-amber-400/35 text-amber-300'
+                                    ? 'border-indigo-400/40 text-indigo-200'
                                     : 'border-white/[0.11] text-zinc-700'
                               )}
                             >
@@ -333,12 +333,12 @@ export function HomeScreen({
                                   initial={{ scale: 0.55, opacity: 0 }}
                                   animate={{ scale: 1, opacity: 1 }}
                                   transition={{ type: 'spring', stiffness: 520, damping: 24 }}
-                                  className="text-amber-300"
+                                  className="text-white"
                                 >
                                   {digit}
                                 </motion.span>
                               ) : isCurrentSlot ? (
-                                <span className="h-5 w-0.5 rounded-full bg-amber-300 animate-pulse" />
+                                <span className="h-5 w-0.5 rounded-full bg-indigo-400 animate-pulse" />
                               ) : (
                                 <span className="text-base text-zinc-700">•</span>
                               )}
@@ -377,7 +377,7 @@ export function HomeScreen({
           {COUP_CHARACTERS.map((charKey) => (
             <span
               key={charKey}
-              className="h-1.5 w-1.5 rounded-full opacity-70"
+              className="h-1.5 w-1.5 rounded-full opacity-75"
               style={{ backgroundColor: CHARACTER_META[charKey].hex }}
             />
           ))}

@@ -3,8 +3,8 @@ import { cn } from '../../lib/utils';
 
 const VARIANT_CLASSES = {
   default: 'bg-white/[0.08] text-zinc-200 border-white/[0.12]',
-  gold: 'bg-amber-500/15 text-amber-300 border-amber-400/30',
-  danger: 'bg-red-500/15 text-red-300 border-red-500/30',
+  gold: 'bg-indigo-500/20 text-indigo-200 border-indigo-400/35',
+  danger: 'bg-rose-500/15 text-rose-200 border-rose-500/35',
   success: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
   muted: 'bg-zinc-800/80 text-zinc-400 border-white/[0.08]',
   outline: 'bg-transparent text-zinc-300 border-white/15',

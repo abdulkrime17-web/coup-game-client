@@ -62,7 +62,7 @@ function buildCenterBanner(room, selfId) {
         ? 'تم اختيار بطاقتك — بانتظار اللاعب الآخر'
         : 'اختر شخصيتك الأولى لبدء الجولة',
       accentRole: null,
-      tone: 'gold',
+      tone: 'accent',
     };
   }
 
@@ -77,7 +77,7 @@ function buildCenterBanner(room, selfId) {
           : 'اختر حركتك من شريط الأوامر بالأسفل'
         : `دور ${turnName} لاختيار حركته...`,
       accentRole: null,
-      tone: isMine ? (room.mandatoryCoup ? 'danger' : 'gold') : 'default',
+      tone: isMine ? (room.mandatoryCoup ? 'danger' : 'accent') : 'default',
     };
   }
 
@@ -166,12 +166,12 @@ function buildCenterBanner(room, selfId) {
 }
 
 const AMBIENT_AURA_BY_TONE = {
-  gold: 'rgba(251, 191, 36, 0.16)',
-  challenge: 'rgba(244, 63, 94, 0.18)',
-  danger: 'rgba(239, 68, 68, 0.22)',
-  block: 'rgba(14, 165, 233, 0.18)',
+  accent: 'rgba(129, 140, 248, 0.2)',
+  challenge: 'rgba(244, 63, 94, 0.2)',
+  danger: 'rgba(239, 68, 68, 0.24)',
+  block: 'rgba(56, 189, 248, 0.2)',
   exchange: 'rgba(132, 204, 22, 0.16)',
-  default: 'rgba(168, 85, 247, 0.10)',
+  default: 'rgba(99, 102, 241, 0.12)',
 };
 
 export function GameTable({
@@ -265,7 +265,7 @@ export function GameTable({
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-obsidian-stage flex flex-col">
-      {/* Subtle Luxury Grid & Phase-Reactive Ambient Glow */}
+      {/* Subtle Luxury Grid & Phase-Reactive Cool Ambient Glow */}
       <div className="pointer-events-none absolute inset-0 bg-luxury-grid opacity-30" />
       <motion.div
         aria-hidden="true"
@@ -276,13 +276,13 @@ export function GameTable({
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-2xl flex-col px-3 sm:px-4 pt-2.5 safe-pt safe-pb gap-2.5">
         {/* 1. TOP COMPACT HUD */}
-        <header className="flex shrink-0 items-center justify-between gap-2 rounded-2xl border border-white/[0.11] bg-[#101017]/85 px-3 py-2 backdrop-blur-2xl shadow-glass">
+        <header className="flex shrink-0 items-center justify-between gap-2 rounded-2xl border border-white/[0.11] bg-[#0D1019]/85 px-3 py-2 backdrop-blur-2xl shadow-glass">
           <div className="flex items-center gap-2.5 min-w-0">
             <span
               className={cn(
                 'h-2.5 w-2.5 shrink-0 rounded-full',
                 isMyTurn
-                  ? 'bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.95)] animate-pulse'
+                  ? 'bg-indigo-400 shadow-[0_0_12px_rgba(129,140,248,0.95)] animate-pulse'
                   : 'bg-zinc-500'
               )}
             />
@@ -296,7 +296,7 @@ export function GameTable({
               </div>
               <div className="flex items-center gap-2 text-[10px] text-zinc-400 leading-tight mt-0.5">
                 <span className="inline-flex items-center gap-1 tabular-nums">
-                  <Layers className="h-2.5 w-2.5 text-amber-300/75" strokeWidth={1.75} />
+                  <Layers className="h-2.5 w-2.5 text-indigo-300/80" strokeWidth={1.75} />
                   الديوان: {room.courtDeckCount}
                 </span>
                 <span dir="ltr" className="text-zinc-500 tabular-nums">
@@ -316,7 +316,7 @@ export function GameTable({
               <ScrollText className="h-3.5 w-3.5 text-zinc-300" strokeWidth={1.75} />
               <span className="hidden min-[380px]:inline">السجل</span>
               {unreadLog && (
-                <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-amber-400 ring-2 ring-[#101017]" />
+                <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-indigo-400 ring-2 ring-[#0D1019]" />
               )}
             </Button>
 
@@ -324,9 +324,9 @@ export function GameTable({
               variant="secondary"
               size="xs"
               onClick={onOpenRules}
-              className="border-amber-400/30 bg-amber-400/15 text-amber-200 hover:bg-amber-400/20"
+              className="border-indigo-400/35 bg-indigo-500/15 text-indigo-100 hover:bg-indigo-500/25"
             >
-              <BookOpen className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+              <BookOpen className="h-3.5 w-3.5 text-indigo-300" strokeWidth={1.75} />
               <span>ورقة القواعد</span>
             </Button>
 
@@ -363,7 +363,7 @@ export function GameTable({
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="flex shrink-0 items-center justify-center gap-2 rounded-xl border border-amber-500/35 bg-amber-500/15 px-3 py-1.5 text-xs font-bold text-amber-200"
+              className="flex shrink-0 items-center justify-center gap-2 rounded-xl border border-sky-400/35 bg-sky-500/15 px-3 py-1.5 text-xs font-bold text-sky-200"
             >
               <WifiOff className="h-3.5 w-3.5 animate-pulse" strokeWidth={1.75} />
               <span>انقطع الاتصال مؤقتاً — جاري إعادة الاتصال بالغرفة...</span>
@@ -396,16 +396,16 @@ export function GameTable({
                 className={cn(
                   'relative rounded-2xl border p-2.5 transition-all backdrop-blur-2xl overflow-hidden',
                   !opp.isAlive
-                    ? 'border-white/[0.06] bg-[#0B0B10]/65 opacity-45'
+                    ? 'border-white/[0.06] bg-[#0A0C12]/65 opacity-45'
                     : isOppTurn
-                      ? 'border-amber-400/55 bg-[#14131B]/90 ring-1 ring-amber-400/35 shadow-[0_0_28px_-10px_rgba(251,191,36,0.7)]'
+                      ? 'border-indigo-400/60 bg-[#121629]/90 ring-1 ring-indigo-400/35 shadow-[0_0_28px_-10px_rgba(129,140,248,0.7)]'
                       : isTargeted
                         ? 'border-rose-400/50 bg-rose-950/25 shadow-[0_0_24px_-10px_rgba(244,63,94,0.55)]'
-                        : 'border-white/[0.1] bg-[#101017]/75'
+                        : 'border-white/[0.1] bg-[#0D1019]/80'
                 )}
               >
                 {isOppTurn && opp.isAlive && (
-                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/80 to-transparent" />
+                  <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-indigo-300/85 to-transparent" />
                 )}
 
                 <div className="flex items-center justify-between gap-1.5 mb-2">
@@ -416,9 +416,9 @@ export function GameTable({
                         !opp.isAlive
                           ? 'bg-zinc-600'
                           : opp.status === 'reconnecting'
-                            ? 'bg-amber-400 animate-pulse'
+                            ? 'bg-sky-400 animate-pulse'
                             : isOppTurn
-                              ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.9)]'
+                              ? 'bg-indigo-400 shadow-[0_0_8px_rgba(129,140,248,0.95)]'
                               : 'bg-emerald-400/80'
                       )}
                     />
@@ -478,16 +478,16 @@ export function GameTable({
               className={cn(
                 'relative overflow-hidden rounded-3xl border p-4 backdrop-blur-2xl shadow-glass',
                 banner.tone === 'danger'
-                  ? 'border-rose-500/45 bg-gradient-to-b from-rose-950/45 via-[#160D12]/90 to-[#101017]/90'
+                  ? 'border-rose-500/45 bg-gradient-to-b from-rose-950/45 via-[#150C14]/90 to-[#0D1019]/90'
                   : banner.tone === 'challenge'
-                    ? 'border-amber-400/40 bg-gradient-to-b from-amber-950/35 via-[#151218]/90 to-[#101017]/90'
+                    ? 'border-fuchsia-400/40 bg-gradient-to-b from-fuchsia-950/35 via-[#131022]/90 to-[#0D1019]/90'
                     : banner.tone === 'block'
-                      ? 'border-sky-400/40 bg-gradient-to-b from-sky-950/35 via-[#0E141D]/90 to-[#101017]/90'
+                      ? 'border-sky-400/40 bg-gradient-to-b from-sky-950/35 via-[#0E1524]/90 to-[#0D1019]/90'
                       : banner.tone === 'exchange'
-                        ? 'border-lime-400/35 bg-gradient-to-b from-lime-950/30 via-[#101612]/90 to-[#101017]/90'
-                        : banner.tone === 'gold'
-                          ? 'border-amber-400/35 bg-gradient-to-b from-amber-500/[0.1] to-[#101017]/90'
-                          : 'border-white/[0.11] bg-[#101017]/85'
+                        ? 'border-lime-400/35 bg-gradient-to-b from-lime-950/30 via-[#0F1716]/90 to-[#0D1019]/90'
+                        : banner.tone === 'accent'
+                          ? 'border-indigo-400/40 bg-gradient-to-b from-indigo-500/15 to-[#0D1019]/90'
+                          : 'border-white/[0.11] bg-[#0D1019]/85'
               )}
             >
               {/* Top Specular Accent Hairline */}
@@ -496,11 +496,13 @@ export function GameTable({
                   'pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent to-transparent',
                   banner.tone === 'danger'
                     ? 'via-rose-400/75'
-                    : banner.tone === 'block'
-                      ? 'via-sky-400/75'
-                      : banner.tone === 'exchange'
-                        ? 'via-lime-400/75'
-                        : 'via-amber-300/65'
+                    : banner.tone === 'challenge'
+                      ? 'via-fuchsia-400/75'
+                      : banner.tone === 'block'
+                        ? 'via-sky-400/75'
+                        : banner.tone === 'exchange'
+                          ? 'via-lime-400/75'
+                          : 'via-indigo-300/75'
                 )}
               />
 
@@ -508,8 +510,8 @@ export function GameTable({
               <div className="flex items-center justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="inline-flex items-center gap-1 text-[11px] font-bold text-zinc-400">
-                    {banner.tone === 'gold' && (
-                      <Sparkles className="h-3 w-3 text-amber-300" strokeWidth={2} />
+                    {banner.tone === 'accent' && (
+                      <Sparkles className="h-3 w-3 text-indigo-300" strokeWidth={2} />
                     )}
                     {banner.eyebrow}
                   </span>
@@ -561,8 +563,8 @@ export function GameTable({
                       countdown.isUrgent
                         ? 'bg-gradient-to-l from-rose-400 to-red-500 shadow-[0_0_12px_rgba(244,63,94,0.75)]'
                         : banner.tone === 'block'
-                          ? 'bg-gradient-to-l from-sky-300 to-sky-500 shadow-[0_0_12px_rgba(56,189,248,0.6)]'
-                          : 'bg-gradient-to-l from-amber-300 to-amber-500 shadow-[0_0_12px_rgba(251,191,36,0.6)]'
+                          ? 'bg-gradient-to-l from-sky-300 to-sky-500 shadow-[0_0_12px_rgba(56,189,248,0.65)]'
+                          : 'bg-gradient-to-l from-indigo-400 to-violet-500 shadow-[0_0_12px_rgba(129,140,248,0.65)]'
                     )}
                     style={{ width: `${Math.round(countdown.progress * 100)}%` }}
                   />
@@ -685,17 +687,20 @@ export function GameTable({
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 14, scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 380, damping: 28 }}
-                className="relative overflow-hidden rounded-3xl border border-white/[0.13] bg-[#12121A]/90 p-2.5 backdrop-blur-2xl shadow-glass"
+                className="relative overflow-hidden rounded-3xl border border-white/[0.13] bg-[#0F1220]/90 p-2.5 backdrop-blur-2xl shadow-glass"
               >
-                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/50 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-indigo-300/60 to-transparent" />
 
                 {isMandatoryCoup && (
                   <motion.div
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-2 flex items-center justify-center gap-1.5 rounded-2xl border border-rose-500/40 bg-gradient-to-l from-amber-500/20 via-rose-500/25 to-amber-500/20 px-3 py-1.5 text-xs font-extrabold text-amber-100"
+                    className="mb-2 flex items-center justify-center gap-1.5 rounded-2xl border border-rose-500/45 bg-gradient-to-l from-rose-500/20 via-red-600/25 to-rose-500/20 px-3 py-1.5 text-xs font-extrabold text-rose-100"
                   >
-                    <Zap className="h-3.5 w-3.5 text-rose-400 fill-current animate-pulse" strokeWidth={1.75} />
+                    <Zap
+                      className="h-3.5 w-3.5 text-rose-400 fill-current animate-pulse"
+                      strokeWidth={1.75}
+                    />
                     <span>إجباري عند 10 عملات — نفّذ انقلاباً الآن</span>
                   </motion.div>
                 )}
@@ -721,10 +726,10 @@ export function GameTable({
                         className={cn(
                           'relative overflow-hidden flex flex-col items-center justify-center rounded-2xl border px-2 py-2.5 text-center transition-all',
                           isCoupHighlight
-                            ? 'foil-shimmer border-amber-300/80 bg-gradient-to-b from-rose-500/40 via-red-600/35 to-amber-500/25 text-white shadow-crimsonGlow ring-1 ring-amber-300/60'
+                            ? 'foil-shimmer border-rose-300/80 bg-gradient-to-b from-rose-500/45 via-red-600/35 to-rose-600/30 text-white shadow-crimsonGlow ring-1 ring-rose-300/60'
                             : act.id === 'coup'
                               ? 'border-rose-500/30 bg-rose-500/15 text-rose-100 hover:bg-rose-500/25'
-                              : 'border-white/[0.1] bg-white/[0.045] text-zinc-100 hover:bg-white/[0.09] hover:border-white/20',
+                              : 'border-white/[0.1] bg-white/[0.045] text-zinc-100 hover:bg-white/[0.09] hover:border-indigo-300/30',
                           isDisabled && 'opacity-30 pointer-events-none'
                         )}
                       >
@@ -732,7 +737,11 @@ export function GameTable({
                           <Icon
                             className={cn(
                               'h-3.5 w-3.5',
-                              act.id === 'coup' ? 'text-rose-300' : 'text-amber-300'
+                              act.id === 'coup'
+                                ? 'text-rose-300'
+                                : act.id === 'income'
+                                  ? 'text-yellow-400'
+                                  : 'text-emerald-300'
                             )}
                             strokeWidth={1.75}
                           />
@@ -803,7 +812,7 @@ export function GameTable({
           )}
 
           {/* Your Hand Header + Animated Coins + Privacy Shield */}
-          <div className="relative overflow-hidden rounded-3xl border border-white/[0.11] bg-[#101017]/85 p-3 backdrop-blur-2xl shadow-glass">
+          <div className="relative overflow-hidden rounded-3xl border border-white/[0.11] bg-[#0D1019]/85 p-3 backdrop-blur-2xl shadow-glass">
             <div className="mb-2.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2.5">
                 <CoinBadge coins={me?.coins ?? 0} label="عملات" size="md" />
@@ -820,7 +829,7 @@ export function GameTable({
                 className={cn(
                   'inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-1 text-[11px] font-bold transition-colors',
                   privacyShield
-                    ? 'border-amber-400/45 bg-amber-400/15 text-amber-200'
+                    ? 'border-indigo-400/50 bg-indigo-500/20 text-indigo-200'
                     : 'border-white/[0.1] bg-white/[0.05] text-zinc-400 hover:text-zinc-100'
                 )}
               >
@@ -874,8 +883,8 @@ export function GameTable({
                     transition={{ duration: 0.16 }}
                     className="pointer-events-none absolute inset-0 flex items-center justify-center"
                   >
-                    <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300/25 bg-[#0A0A0F]/90 px-3.5 py-1.5 text-xs font-bold text-zinc-100 shadow-lg backdrop-blur-md">
-                      <Eye className="h-3.5 w-3.5 text-amber-300" strokeWidth={1.75} />
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-300/30 bg-[#080A12]/95 px-3.5 py-1.5 text-xs font-bold text-zinc-100 shadow-lg backdrop-blur-md">
+                      <Eye className="h-3.5 w-3.5 text-indigo-300" strokeWidth={1.75} />
                       اضغط مطوّلاً للكشف
                     </span>
                   </motion.div>

@@ -7,9 +7,9 @@ const VARIANT_CLASSES = {
   primary:
     'bg-gradient-to-b from-white to-zinc-200 text-zinc-950 hover:from-white hover:to-white shadow-[0_10px_25px_-12px_rgba(255,255,255,0.45)] border border-white/40 font-bold',
   gold:
-    'bg-gradient-to-b from-amber-200 via-amber-400 to-amber-500 text-zinc-950 hover:brightness-105 border border-amber-100/50 shadow-glow font-extrabold',
+    'bg-gradient-to-b from-indigo-400 via-violet-500 to-indigo-600 text-white hover:brightness-110 border border-indigo-300/45 shadow-glow font-extrabold',
   secondary:
-    'bg-[#14141B]/85 text-zinc-100 hover:bg-[#1C1C26]/95 border border-white/[0.11] hover:border-white/20 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] font-semibold',
+    'bg-[#111420]/85 text-zinc-100 hover:bg-[#191D2E]/95 border border-white/[0.11] hover:border-indigo-300/25 backdrop-blur-xl shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] font-semibold',
   outline:
     'bg-transparent text-zinc-200 hover:bg-white/[0.06] border border-white/15 hover:border-white/25 font-semibold',
   ghost:
@@ -55,7 +55,7 @@ export const Button = React.forwardRef(function Button(
       transition={{ type: 'spring', stiffness: 520, damping: 28 }}
       disabled={isDisabled}
       className={cn(
-        'relative overflow-hidden inline-flex items-center justify-center whitespace-nowrap select-none transition-[background,border-color,box-shadow,filter] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#07070A] disabled:opacity-40 disabled:pointer-events-none',
+        'relative overflow-hidden inline-flex items-center justify-center whitespace-nowrap select-none transition-[background,border-color,box-shadow,filter] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 focus-visible:ring-offset-2 focus-visible:ring-offset-[#06070B] disabled:opacity-40 disabled:pointer-events-none',
         VARIANT_CLASSES[variant] || VARIANT_CLASSES.primary,
         SIZE_CLASSES[size] || SIZE_CLASSES.md,
         shimmer && !isDisabled && 'foil-shimmer',

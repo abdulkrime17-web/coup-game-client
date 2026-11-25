@@ -30,7 +30,7 @@ export function ActionLogSheet({ open, onClose, actionLog = [] }) {
               className={cn(
                 'flex items-start justify-between gap-3 rounded-2xl border px-3.5 py-2.5',
                 idx === 0
-                  ? 'border-amber-400/25 bg-amber-400/[0.06]'
+                  ? 'border-indigo-400/35 bg-indigo-500/10'
                   : 'border-white/[0.08] bg-white/[0.03]'
               )}
             >
@@ -38,7 +38,7 @@ export function ActionLogSheet({ open, onClose, actionLog = [] }) {
                 <span
                   className={
                     idx === 0
-                      ? 'mt-1.5 h-2 w-2 shrink-0 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)]'
+                      ? 'mt-1.5 h-2 w-2 shrink-0 rounded-full bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.95)]'
                       : 'mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-zinc-600'
                   }
                 />

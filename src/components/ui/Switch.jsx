@@ -12,9 +12,9 @@ export function Switch({ checked = false, onCheckedChange, disabled = false, cla
       disabled={disabled}
       onClick={() => !disabled && onCheckedChange?.(!checked)}
       className={cn(
-        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border p-0.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60 disabled:cursor-not-allowed disabled:opacity-45',
+        'relative inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border p-0.5 transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400/70 disabled:cursor-not-allowed disabled:opacity-45',
         checked
-          ? 'justify-end bg-amber-400/90 border-amber-300/60'
+          ? 'justify-end bg-indigo-500 border-indigo-300/60 shadow-[0_0_16px_-4px_rgba(129,140,248,0.8)]'
           : 'justify-start bg-zinc-800 border-white/15',
         className
       )}
@@ -24,7 +24,7 @@ export function Switch({ checked = false, onCheckedChange, disabled = false, cla
         transition={{ type: 'spring', stiffness: 520, damping: 32 }}
         className={cn(
           'pointer-events-none block h-[18px] w-[18px] rounded-full shadow-sm',
-          checked ? 'bg-zinc-950' : 'bg-zinc-300'
+          checked ? 'bg-white' : 'bg-zinc-400'
         )}
       />
     </button>

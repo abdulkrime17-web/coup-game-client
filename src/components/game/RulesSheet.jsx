@@ -69,7 +69,7 @@ export function RulesSheet({ open, onClose }) {
           </h3>
           <div className="grid grid-cols-1 gap-2">
             <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-amber-400/30 bg-amber-400/15 text-amber-300">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-yellow-400/30 bg-yellow-400/10 text-yellow-400">
                 <Coins className="h-4 w-4" strokeWidth={1.75} />
               </div>
               <div className="min-w-0">
@@ -100,7 +100,7 @@ export function RulesSheet({ open, onClose }) {
                 <div className="text-xs font-bold text-zinc-100">انقلاب (-7 عملات)</div>
                 <div className="text-[11px] text-zinc-300">
                   يُجبر خصماً على خسارة بطاقة فوراً ولا يُصدّ. يصبح{' '}
-                  <strong className="text-amber-300">إجبارياً عند 10 عملات</strong>.
+                  <strong className="text-rose-300">إجبارياً عند 10 عملات</strong>.
                 </div>
               </div>
             </div>

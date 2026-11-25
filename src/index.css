@@ -7,7 +7,7 @@
   body,
   #root {
     height: 100%;
-    background-color: #07070a;
+    background-color: #06070b;
     color: #f4f4f5;
     font-family: 'Cairo', system-ui, -apple-system, sans-serif;
     overscroll-behavior: none;
@@ -15,31 +15,31 @@
   }
 }
 
-/* Deep midnight obsidian backdrop with jewel-tone depth */
+/* Cool Midnight Obsidian & Royal Indigo/Violet depth (zero warm/brown haze) */
 .bg-obsidian-stage {
   position: relative;
-  background-color: #07070a;
+  background-color: #06070b;
   background-image:
-    radial-gradient(ellipse 90% 50% at 50% -12%, rgba(251, 191, 36, 0.11), transparent 62%),
-    radial-gradient(ellipse 65% 45% at 100% 100%, rgba(217, 70, 239, 0.09), transparent 58%),
-    radial-gradient(ellipse 55% 40% at 0% 85%, rgba(14, 165, 233, 0.08), transparent 58%);
+    radial-gradient(ellipse 85% 48% at 50% -10%, rgba(99, 102, 241, 0.16), transparent 64%),
+    radial-gradient(ellipse 60% 42% at 100% 100%, rgba(168, 85, 247, 0.11), transparent 60%),
+    radial-gradient(ellipse 55% 38% at 0% 85%, rgba(14, 165, 233, 0.09), transparent 60%);
 }
 
-/* Subtle luxury hairline dot-grid texture for depth */
+/* Subtle luxury hairline dot-grid texture */
 .bg-luxury-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(199, 210, 254, 0.065) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
-/* Luxury geometric guilloche pattern for concealed influence card backs */
+/* Cool Obsidian-Indigo geometric guilloche pattern for concealed card backs */
 .card-back-pattern {
-  background-color: #0f1016;
+  background-color: #0c0e16;
   background-image:
-    radial-gradient(circle at 50% 30%, rgba(251, 191, 36, 0.12), transparent 65%),
+    radial-gradient(circle at 50% 30%, rgba(129, 140, 248, 0.16), transparent 65%),
     repeating-linear-gradient(
       45deg,
-      rgba(251, 191, 36, 0.045) 0px,
-      rgba(251, 191, 36, 0.045) 1px,
+      rgba(129, 140, 248, 0.055) 0px,
+      rgba(129, 140, 248, 0.055) 1px,
       transparent 1px,
       transparent 8px
     ),
@@ -77,19 +77,6 @@
   pointer-events: none;
 }
 
-@keyframes slow-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-slow-spin {
-  animation: slow-spin 14s linear infinite;
-}
-
 /* 3D perspective utilities for card flips */
 .perspective-800 {
   perspective: 900px;
@@ -115,12 +102,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(199, 210, 254, 0.16);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(199, 210, 254, 0.28);
 }
 
 .safe-pb {

@@ -16,11 +16,11 @@ import { CoinBadge } from './CoinBadge';
 import { cn } from '../../lib/utils';
 
 const CELEBRATION_SPARKS = [
-  { left: '12%', delay: 0, duration: 4.5, color: '#FBBF24', size: 6 },
+  { left: '12%', delay: 0, duration: 4.5, color: '#818CF8', size: 6 },
   { left: '26%', delay: 0.7, duration: 5.2, color: '#E879F9', size: 5 },
-  { left: '42%', delay: 0.3, duration: 4.1, color: '#FDE68A', size: 7 },
-  { left: '58%', delay: 1.1, duration: 4.8, color: '#38BDF8', size: 5 },
-  { left: '74%', delay: 0.5, duration: 5.0, color: '#FBBF24', size: 6 },
+  { left: '42%', delay: 0.3, duration: 4.1, color: '#38BDF8', size: 7 },
+  { left: '58%', delay: 1.1, duration: 4.8, color: '#C084FC', size: 5 },
+  { left: '74%', delay: 0.5, duration: 5.0, color: '#818CF8', size: 6 },
   { left: '88%', delay: 0.9, duration: 4.4, color: '#FB7185', size: 5 },
 ];
 
@@ -71,10 +71,10 @@ export function GameOverScreen({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 320, damping: 24 }}
         >
-          <Card className="relative overflow-hidden border-amber-400/40 bg-gradient-to-b from-amber-500/20 via-[#15121B]/90 to-[#0D0D14]/95 p-6 text-center">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-amber-300/80 to-transparent" />
+          <Card className="relative overflow-hidden border-indigo-400/40 bg-gradient-to-b from-indigo-500/20 via-[#121426]/90 to-[#0B0D18]/95 p-6 text-center">
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-l from-transparent via-indigo-300/80 to-transparent" />
 
-            {/* Subtle Floating Luxury Embers */}
+            {/* Subtle Floating Luxury Sparks */}
             {CELEBRATION_SPARKS.map((spark, i) => (
               <motion.span
                 key={i}
@@ -102,7 +102,7 @@ export function GameOverScreen({
               initial={{ scale: 0.55, rotate: -14 }}
               animate={{ scale: 1, rotate: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 16, delay: 0.12 }}
-              className="relative z-10 mx-auto mb-3.5 flex h-16 w-16 items-center justify-center rounded-2xl border border-amber-300/50 bg-gradient-to-b from-amber-300/25 to-amber-500/15 text-amber-200 shadow-glow"
+              className="relative z-10 mx-auto mb-3.5 flex h-16 w-16 items-center justify-center rounded-2xl border border-indigo-300/50 bg-gradient-to-b from-indigo-400/25 to-violet-500/20 text-indigo-200 shadow-glow"
             >
               <Trophy className="h-8 w-8" strokeWidth={1.75} />
             </motion.div>
@@ -149,14 +149,14 @@ export function GameOverScreen({
                   className={cn(
                     'rounded-2xl border p-3',
                     isWinner
-                      ? 'border-amber-400/40 bg-gradient-to-l from-amber-400/[0.09] to-transparent'
+                      ? 'border-indigo-400/40 bg-gradient-to-l from-indigo-500/15 to-transparent'
                       : 'border-white/[0.08] bg-white/[0.025]'
                   )}
                 >
                   <div className="mb-2.5 flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2 min-w-0">
                       {isWinner && (
-                        <Crown className="h-4 w-4 shrink-0 text-amber-300" strokeWidth={1.75} />
+                        <Crown className="h-4 w-4 shrink-0 text-indigo-300" strokeWidth={1.75} />
                       )}
                       <span className="truncate text-sm font-bold text-white">
                         {player.name}
@@ -223,8 +223,8 @@ export function GameOverScreen({
               </Button>
             </>
           ) : (
-            <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#101017]/80 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
-              <span className="h-2 w-2 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.9)] animate-pulse" />
+            <div className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-[#0D1019]/85 py-3.5 px-4 text-sm font-semibold text-zinc-300 backdrop-blur-xl">
+              <span className="h-2 w-2 rounded-full bg-indigo-400 shadow-[0_0_10px_rgba(129,140,248,0.9)] animate-pulse" />
               <span>بانتظار المضيف لبدء جولة جديدة...</span>
             </div>
           )}
